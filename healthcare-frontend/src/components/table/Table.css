@@ -1,0 +1,39 @@
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+  border-radius: var(--border-radius);
+  border: 1px solid #E2E8F0;
+}
+
+.custom-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  background-color: var(--card-bg);
+}
+
+.custom-table th {
+  background-color: #F8FAFC;
+  padding: 16px 20px;
+  font-weight: 600;
+  color: var(--text-light);
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 1px solid #E2E8F0;
+}
+
+.custom-table td {
+  padding: 16px 20px;
+  border-bottom: 1px solid #F1F5F9;
+  color: var(--text-dark);
+  font-size: 14px;
+}
+
+.custom-table tr:last-child td {
+  border-bottom: none;
+}
+
+.custom-table tr:hover td {
+  background-color: #FAFCFD;
+}
