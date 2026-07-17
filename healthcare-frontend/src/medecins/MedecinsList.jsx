@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Search, Plus, Eye, Edit2, Trash2, Loader } from 'lucide-react';
-import { Card } from '../components/Card';
-import { Table } from '../components/Table';
+import { Card } from "../components/card/Card";
+import { Table } from "../components/table/Table";
 import medecinService from '../services/medecinService';
 import './Medecin.css';
 

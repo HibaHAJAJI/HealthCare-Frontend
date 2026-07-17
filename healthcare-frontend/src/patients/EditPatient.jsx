@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { Loader } from "lucide-react";
+import { FaSpinner } from "react-icons/fa";
+
 import PatientForm from "./PatientForm";
 import patientService from "../services/patientService";
+
 import "./Patient.css";
 
 const EditPatient = () => {
@@ -15,14 +17,19 @@ const EditPatient = () => {
   useEffect(() => {
     const fetchPatient = async () => {
       try {
-        const response = await patientService.getById(id);
-        setPatient(response.data);
+        const data = await patientService.getById(id);
+
+        setPatient(data);
+
+
       } catch (error) {
         console.error("Erreur lors du chargement du patient :", error);
+
         alert(
           error.response?.data?.message ||
-            "Impossible de charger les informations du patient."
+          "Impossible de charger les informations du patient."
         );
+
         navigate("/patients");
       } finally {
         setLoading(false);
@@ -43,7 +50,7 @@ const EditPatient = () => {
 
       alert(
         error.response?.data?.message ||
-          "Une erreur est survenue lors de la mise à jour."
+        "Une erreur est survenue lors de la mise à jour."
       );
     }
   };
@@ -51,7 +58,22 @@ const EditPatient = () => {
   if (loading) {
     return (
       <div className="loader-container">
-        <Loader className="spinner" size={32} />
+        <FaSpinner className="spinner" size={32} />
+      </div>
+    );
+  }
+
+  if (!patient) {
+    return (
+      <div className="form-container">
+        <h2>Patient introuvable</h2>
+
+        <button
+          className="btn-back"
+          onClick={() => navigate("/patients")}
+        >
+          Retour
+        </button>
       </div>
     );
   }

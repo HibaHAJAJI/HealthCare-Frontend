@@ -1,14 +1,15 @@
 import { useEffect, useState } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import {
-  Loader,
-  ArrowLeft,
-  Edit2,
-  Phone,
-  Mail,
-  User,
-} from "lucide-react";
-import { Card } from "../components/Card";
+  FaSpinner,
+  FaArrowLeft,
+  FaEdit,
+  FaPhone,
+  FaEnvelope,
+  FaUser,
+} from "react-icons/fa";
+
+import { Card } from "../components/card/Card";
 import patientService from "../services/patientService";
 import "./Patient.css";
 
@@ -21,7 +22,7 @@ const PatientDetails = () => {
   const [error, setError] = useState("");
 
   useEffect(() => {
-    async function fetchPatientDetails() {
+    const fetchPatientDetails = async () => {
       try {
         const data = await patientService.getById(id);
         setPatient(data);
@@ -31,15 +32,15 @@ const PatientDetails = () => {
       } finally {
         setLoading(false);
       }
-    }
+    };
 
     fetchPatientDetails();
-  }, [id, navigate]);
+  }, [id]);
 
   if (loading) {
     return (
       <div className="loader-container">
-        <Loader className="spinner" size={32} />
+        <FaSpinner className="spinner" size={32} />
       </div>
     );
   }
@@ -70,7 +71,7 @@ const PatientDetails = () => {
           className="btn-back"
           onClick={() => navigate("/patients")}
         >
-          <ArrowLeft size={16} />
+          <FaArrowLeft size={16} />
           <span>Retour</span>
         </button>
 
@@ -78,7 +79,7 @@ const PatientDetails = () => {
           to={`/patients/edit/${patient.id}`}
           className="btn-primary"
         >
-          <Edit2 size={16} />
+          <FaEdit size={16} />
           <span>Modifier la fiche</span>
         </Link>
       </div>
@@ -102,23 +103,14 @@ const PatientDetails = () => {
         <div className="patient-info-grid">
           <div className="info-block">
             <div className="block-header">
-              <User size={18} />
+              <FaUser size={18} />
               <h3>Informations personnelles</h3>
             </div>
 
             <div className="block-body">
-              <p>
-                <strong>Identifiant :</strong> #{patient.id}
-              </p>
-
-              <p>
-                <strong>Nom :</strong> {patient.nom}
-              </p>
-
-              <p>
-                <strong>Prénom :</strong> {patient.prenom}
-              </p>
-
+              <p><strong>Identifiant :</strong> #{patient.id}</p>
+              <p><strong>Nom :</strong> {patient.nom}</p>
+              <p><strong>Prénom :</strong> {patient.prenom}</p>
               <p>
                 <strong>Âge :</strong>{" "}
                 {patient.age ? `${patient.age} ans` : "Non renseigné"}
@@ -128,18 +120,18 @@ const PatientDetails = () => {
 
           <div className="info-block">
             <div className="block-header">
-              <Phone size={18} />
+              <FaPhone size={18} />
               <h3>Coordonnées</h3>
             </div>
 
             <div className="block-body">
               <p className="info-item-flex">
-                <Mail size={16} />
+                <FaEnvelope size={16} />
                 <span>{patient.email || "Non renseigné"}</span>
               </p>
 
               <p className="info-item-flex">
-                <Phone size={16} />
+                <FaPhone size={16} />
                 <span>{patient.telephone || "Non renseigné"}</span>
               </p>
             </div>

@@ -1,7 +1,7 @@
 import  { useEffect, useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { Loader, ArrowLeft, Edit2, Phone, Mail, Award } from 'lucide-react';
-import { Card } from '../components/Card';
+import { Card } from '../components/card/Card';
 import doctorService from '../services/medecinService';
 import './Medecin.css';
 
