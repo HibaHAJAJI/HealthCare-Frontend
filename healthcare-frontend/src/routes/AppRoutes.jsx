@@ -6,6 +6,7 @@ import Medecins from './pages/Medecins';
 import Patients from './pages/Patients';
 import About from './pages/About';
 import NotFound from './pages/NotFound';
+import Login from './pages/auth/Login'; 
 
 import AddMedecin from './medecins/AddMedecin';
 import EditMedecin from './medecins/EditMedecin';
@@ -21,6 +22,9 @@ const AppRoutes = () => {
   return (
     <Router>
       <Routes>
+
+        <Route path="/login" element={<Login />} />
+
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />
           <Route path="dashboard" element={<Dashboard />} />
