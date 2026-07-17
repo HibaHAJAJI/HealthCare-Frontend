@@ -1,7 +1,6 @@
 import { Link } from 'react-router-dom';
 import { Activity, Shield, Users, ArrowRight } from 'lucide-react';
 import { Card } from '../components/Card';
-import './Home.css';
 
 const Home = () => {
   return (
