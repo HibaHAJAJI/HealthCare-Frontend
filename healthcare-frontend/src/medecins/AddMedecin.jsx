@@ -1,18 +1,18 @@
 import { useNavigate } from 'react-router-dom';
-import DoctorForm from './MedecinForm';
-import doctorService from '../services/medecinService';
+import MedecinForm from './MedecinForm';
+import medecinService from '../services/medecinService';
 
-const AddDoctor = () => {
+const AddMedecin = () => {
   const navigate = useNavigate();
 
-  const handleAddDoctor = async (data) => {
+  const handleAddMedecin = async (data) => {
     try {
-      await doctorService.create(data);
+      await medecinService.create(data);
       alert("Médecin ajouté avec succès !");
       navigate('/doctors');
     } catch (error) {
       console.error("Erreur lors de la création du médecin :", error);
-      alert("Une erreur est survenue.");
+      alert("Une erreur est survenue lors de l'enregistrement du médecin.");
     }
   };
 
@@ -20,11 +20,11 @@ const AddDoctor = () => {
     <div className="form-container">
       <div className="header-section">
         <h2>Ajouter un Médecin</h2>
-        <button className="btn-back" onClick={() => navigate('/doctors')}>Retour</button>
+        <button type="button" className="btn-back" onClick={() => navigate('/doctors')}>Retour</button>
       </div>
-      <DoctorForm onSubmit={handleAddDoctor} submitLabel="Ajouter le Médecin" />
+      <MedecinForm onSubmit={handleAddMedecin} submitLabel="Ajouter le Médecin" />
     </div>
   );
 };
 
-export default AddDoctor;
+export default AddMedecin;
