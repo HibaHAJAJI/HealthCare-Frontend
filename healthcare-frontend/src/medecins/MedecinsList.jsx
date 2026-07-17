@@ -4,6 +4,7 @@ import { Search, Plus, Eye, Edit2, Trash2, Loader } from 'lucide-react';
 import { Card } from '../components/Card';
 import { Table } from '../components/Table';
 import medecinService from '../services/medecinService';
+import './Medecin.css';
 
 const MedecinsList = () => {
   const [medecins, setMedecins] = useState([]);

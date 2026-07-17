@@ -2,6 +2,7 @@ import  { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { medecinSchema } from '../validation/medecinSchema';
+import './Medecin.css';
 
 const MedecinForm = ({ onSubmit, initialData, submitLabel = "Enregistrer" }) => {
   const { register, handleSubmit, reset, formState: { errors } } = useForm({

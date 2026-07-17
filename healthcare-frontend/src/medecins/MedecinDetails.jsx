@@ -3,6 +3,7 @@ import { useParams, Link, useNavigate } from 'react-router-dom';
 import { Loader, ArrowLeft, Edit2, Phone, Mail, Award } from 'lucide-react';
 import { Card } from '../components/Card';
 import doctorService from '../services/medecinService';
+import './Medecin.css';
 
 const MedecinDetails = () => {
   const { id } = useParams();

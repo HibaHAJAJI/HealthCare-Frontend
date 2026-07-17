@@ -3,6 +3,8 @@ import { useParams, useNavigate } from 'react-router-dom';
 import MedecinForm from './MedecinForm';
 import medecinService from '../services/medecinService';
 import { Loader } from 'lucide-react';
+import './Medecin.css';
+
 
 const EditMedecin = () => {
   const { id } = useParams();

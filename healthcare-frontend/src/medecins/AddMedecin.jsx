@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import MedecinForm from './MedecinForm';
 import medecinService from '../services/medecinService';
+import './Medecin.css';
 
 const AddMedecin = () => {
   const navigate = useNavigate();
