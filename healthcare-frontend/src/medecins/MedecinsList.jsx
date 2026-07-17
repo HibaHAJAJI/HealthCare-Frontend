@@ -1,39 +1,58 @@
-import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { Search, Plus, Eye, Edit2, Trash2, Loader } from 'lucide-react';
+import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+
+import {
+  FaSearch,
+  FaPlus,
+  FaEye,
+  FaEdit,
+  FaTrash,
+  FaSpinner,
+} from "react-icons/fa";
+
 import { Card } from "../components/card/Card";
 import { Table } from "../components/table/Table";
-import medecinService from '../services/medecinService';
-import './Medecin.css';
+import medecinService from "../services/medecinService";
+
+import "./Medecin.css";
 
 const MedecinsList = () => {
   const [medecins, setMedecins] = useState([]);
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
   useEffect(() => {
-    async function loadMedecins() {
+    const loadMedecins = async () => {
       try {
         const data = await medecinService.getAll();
         setMedecins(data);
+
       } catch (err) {
         console.error("Erreur lors du chargement des médecins :", err);
         setError("Impossible de charger la liste des médecins.");
       } finally {
         setLoading(false);
       }
-    }
+    };
+
     loadMedecins();
   }, []);
 
   const handleDelete = async (id) => {
-    const confirmDelete = window.confirm("Voulez-vous supprimer ce médecin ?");
+    const confirmDelete = window.confirm(
+      "Voulez-vous supprimer ce médecin ?"
+    );
+
     if (!confirmDelete) return;
 
     try {
       await medecinService.delete(id);
-      setMedecins((prev) => prev.filter((m) => m.id !== id));
+
+      setMedecins((prev) =>
+        prev.filter((medecin) => medecin.id !== id)
+      );
+
       alert("Médecin supprimé avec succès !");
     } catch (err) {
       console.error("Erreur lors de la suppression :", err);
@@ -42,12 +61,22 @@ const MedecinsList = () => {
   };
 
   const filteredMedecins = medecins.filter((m) => {
-    const fullName = `${m.nom || ''} ${m.prenom || ''}`.toLowerCase();
+    const fullName =
+      `${m.nom || ""} ${m.prenom || ""}`.toLowerCase();
+
     return (
       fullName.includes(searchTerm.toLowerCase()) ||
       m.speciality?.toLowerCase().includes(searchTerm.toLowerCase())
     );
   });
+
+  if (loading) {
+    return (
+      <div className="loader-container">
+        <FaSpinner className="spinner" size={32} />
+      </div>
+    );
+  }
 
   return (
     <div className="medecins-list-page">
@@ -56,8 +85,9 @@ const MedecinsList = () => {
           <h1>Médecins</h1>
           <p>Gestion de l'équipe médicale.</p>
         </div>
+
         <Link to="/doctors/add" className="btn-primary">
-          <Plus size={18} />
+          <FaPlus size={18} />
           <span>Nouveau Médecin</span>
         </Link>
       </div>
@@ -65,10 +95,11 @@ const MedecinsList = () => {
       <Card>
         <div className="table-actions">
           <div className="search-container">
-            <Search size={18} className="search-icon-inside" />
-            <input 
-              type="text" 
-              placeholder="Rechercher par nom ou spécialité..." 
+            <FaSearch size={18} className="search-icon-inside" />
+
+            <input
+              type="text"
+              placeholder="Rechercher par nom ou spécialité..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
@@ -77,35 +108,53 @@ const MedecinsList = () => {
 
         {error ? (
           <div className="error-container">{error}</div>
-        ) : loading ? (
-          <div className="loader-container">
-            <Loader className="spinner" size={32} />
-          </div>
         ) : (
-          <Table headers={['ID', 'Nom', 'Prénom', 'Spécialité', 'Email', 'Actions']}>
+          <Table
+            headers={[
+              "ID",
+              "Nom",
+              "Prénom",
+              "Spécialité",
+              "Email",
+              "Actions",
+            ]}
+          >
             {filteredMedecins.length > 0 ? (
               filteredMedecins.map((m) => (
                 <tr key={m.id}>
                   <td>{m.id}</td>
-                  <td><strong>{m.nom}</strong></td>
+                  <td>
+                    <strong>{m.nom}</strong>
+                  </td>
                   <td>{m.prenom}</td>
                   <td>{m.speciality}</td>
                   <td>{m.email}</td>
+
                   <td>
                     <div className="action-buttons-group">
-                      <Link to={`/doctors/${m.id}`} className="action-btn view" title="Détails">
-                        <Eye size={18} />
-                      </Link>
-                      <Link to={`/doctors/edit/${m.id}`} className="action-btn edit" title="Modifier">
-                        <Edit2 size={18} />
-                      </Link>
-                      <button 
-                        type="button" 
-                        className="action-btn delete" 
-                        onClick={() => handleDelete(m.id)}
-                        title="Supprimer"
+                      <Link
+                        to={`/doctors/${m.id}`}
+                        className="action-btn view"
+                        title="Détails"
                       >
-                        <Trash2 size={18} />
+                        <FaEye size={18} />
+                      </Link>
+
+                      <Link
+                        to={`/doctors/edit/${m.id}`}
+                        className="action-btn edit"
+                        title="Modifier"
+                      >
+                        <FaEdit size={18} />
+                      </Link>
+
+                      <button
+                        type="button"
+                        className="action-btn delete"
+                        title="Supprimer"
+                        onClick={() => handleDelete(m.id)}
+                      >
+                        <FaTrash size={18} />
                       </button>
                     </div>
                   </td>
@@ -113,7 +162,9 @@ const MedecinsList = () => {
               ))
             ) : (
               <tr>
-                <td colSpan={6} className="no-data">Aucun médecin trouvé.</td>
+                <td colSpan={6} className="no-data">
+                  Aucun médecin trouvé.
+                </td>
               </tr>
             )}
           </Table>

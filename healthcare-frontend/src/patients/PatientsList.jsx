@@ -1,13 +1,14 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import {
-  Search,
-  Plus,
-  Eye,
-  Edit2,
-  Trash2,
-  Loader,
-} from "lucide-react";
+  FaSearch,
+  FaPlus,
+  FaEye,
+  FaEdit,
+  FaTrash,
+  FaSpinner,
+} from "react-icons/fa";
+
 import { Card } from "../components/card/Card";
 import { Table } from "../components/table/Table";
 import patientService from "../services/patientService";
@@ -19,27 +20,26 @@ const PatientsList = () => {
   const [error, setError] = useState("");
 
   useEffect(() => {
-    async function loadPatients() {
+    const loadPatients = async () => {
       try {
         const data = await patientService.getAll();
+
         setPatients(data);
+
+ 
       } catch (error) {
         console.error("Erreur lors du chargement :", error);
         setError("Impossible de charger la liste des patients.");
       } finally {
         setLoading(false);
       }
-    }
+    };
 
     loadPatients();
   }, []);
 
   const handleDelete = async (id) => {
-    const confirmDelete = window.confirm(
-      "Voulez-vous supprimer ce patient ?"
-    );
-
-    if (!confirmDelete) return;
+    if (!window.confirm("Voulez-vous supprimer ce patient ?")) return;
 
     try {
       await patientService.delete(id);
@@ -56,18 +56,21 @@ const PatientsList = () => {
   };
 
   const filteredPatients = patients.filter((patient) => {
-    const fullName = `${patient.nom || ''} ${patient.prenom || ''}`.toLowerCase();
+    const fullName =
+      `${patient.nom || ""} ${patient.prenom || ""}`.toLowerCase();
 
     return (
       fullName.includes(searchTerm.toLowerCase()) ||
-      patient.email?.toLowerCase().includes(searchTerm.toLowerCase())
+      (patient.email || "")
+        .toLowerCase()
+        .includes(searchTerm.toLowerCase())
     );
   });
 
   if (loading) {
     return (
       <div className="loader-container">
-        <Loader className="spinner" size={32} />
+        <FaSpinner className="spinner" size={32} />
       </div>
     );
   }
@@ -81,7 +84,7 @@ const PatientsList = () => {
         </div>
 
         <Link to="/patients/add" className="btn-primary">
-          <Plus size={18} />
+          <FaPlus size={18} />
           <span>Nouveau Patient</span>
         </Link>
       </div>
@@ -89,7 +92,10 @@ const PatientsList = () => {
       <Card>
         <div className="table-actions">
           <div className="search-container">
-            <Search size={18} className="search-icon-inside" />
+            <FaSearch
+              size={18}
+              className="search-icon-inside"
+            />
 
             <input
               type="text"
@@ -129,7 +135,7 @@ const PatientsList = () => {
                         className="action-btn view"
                         title="Voir les détails"
                       >
-                        <Eye size={18} />
+                        <FaEye size={18} />
                       </Link>
 
                       <Link
@@ -137,7 +143,7 @@ const PatientsList = () => {
                         className="action-btn edit"
                         title="Modifier"
                       >
-                        <Edit2 size={18} />
+                        <FaEdit size={18} />
                       </Link>
 
                       <button
@@ -146,7 +152,7 @@ const PatientsList = () => {
                         title="Supprimer"
                         onClick={() => handleDelete(patient.id)}
                       >
-                        <Trash2 size={18} />
+                        <FaTrash size={18} />
                       </button>
                     </div>
                   </td>

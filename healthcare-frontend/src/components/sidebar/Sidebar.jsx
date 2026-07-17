@@ -1,14 +1,14 @@
 import { NavLink } from "react-router-dom";
-import './Sidebar.css';
 import {
-  LayoutDashboard,
-  Users,
-  UserRound,
-  CalendarDays,
-  FileText,
-  Info,
-  LogOut,
-} from "lucide-react";
+  FaTachometerAlt,
+  FaUsers,
+  FaUserMd,
+  FaCalendarAlt,
+  FaFileMedical,
+  FaInfoCircle,
+  FaSignOutAlt,
+} from "react-icons/fa";
+
 import "./Sidebar.css";
 
 const Sidebar = ({ isOpen, onClose }) => {
@@ -16,39 +16,42 @@ const Sidebar = ({ isOpen, onClose }) => {
     {
       name: "Tableau de bord",
       path: "/dashboard",
-      icon: <LayoutDashboard size={20} />,
+      icon: <FaTachometerAlt size={20} />,
     },
     {
       name: "Patients",
       path: "/patients",
-      icon: <Users size={20} />,
+      icon: <FaUsers size={20} />,
     },
     {
       name: "Médecins",
       path: "/doctors",
-      icon: <UserRound size={20} />,
+      icon: <FaUserMd size={20} />,
     },
     {
       name: "Rendez-vous",
       path: "/appointments",
-      icon: <CalendarDays size={20} />,
+      icon: <FaCalendarAlt size={20} />,
     },
     {
       name: "Dossiers médicaux",
       path: "/medical-records",
-      icon: <FileText size={20} />,
+      icon: <FaFileMedical size={20} />,
     },
     {
       name: "À propos",
       path: "/about",
-      icon: <Info size={20} />,
+      icon: <FaInfoCircle size={20} />,
     },
   ];
 
   return (
     <>
       {isOpen && (
-        <div className="sidebar-overlay" onClick={onClose}></div>
+        <div
+          className="sidebar-overlay"
+          onClick={onClose}
+        ></div>
       )}
 
       <aside className={`sidebar ${isOpen ? "open" : ""}`}>
@@ -58,7 +61,9 @@ const Sidebar = ({ isOpen, onClose }) => {
               key={item.path}
               to={item.path}
               className={({ isActive }) =>
-                isActive ? "sidebar-link active" : "sidebar-link"
+                isActive
+                  ? "sidebar-link active"
+                  : "sidebar-link"
               }
               onClick={onClose}
             >
@@ -70,7 +75,7 @@ const Sidebar = ({ isOpen, onClose }) => {
 
         <div className="sidebar-footer">
           <button className="logout-btn">
-            <LogOut size={20} />
+            <FaSignOutAlt size={20} />
             <span>Déconnexion</span>
           </button>
         </div>

@@ -1,4 +1,4 @@
-import API from './axiosConfig';
+import API from './axios';
 
 const patientService = {
   getAll: async () => {
