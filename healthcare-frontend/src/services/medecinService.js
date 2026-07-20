@@ -1,8 +1,8 @@
-import API from './axios';
+import API from "./axios";
 
 const medecinService = {
-  getAll: async () => {
-    const response = await API.get('/medecins');
+  getAll: async (page = 0, size = 10) => {
+    const response = await API.get(`/medecins?page=${page}&size=${size}`);
     return response.data;
   },
 
@@ -12,7 +12,7 @@ const medecinService = {
   },
 
   create: async (medecinData) => {
-    const response = await API.post('/medecins', medecinData);
+    const response = await API.post("/medecins", medecinData);
     return response.data;
   },
 
@@ -22,9 +22,15 @@ const medecinService = {
   },
 
   delete: async (id) => {
-    const response = await API.delete(`/medecins/${id}`);
+    await API.delete(`/medecins/${id}`);
+  },
+
+  search: async (username, page = 0, size = 10) => {
+    const response = await API.get(
+      `/medecins/triParNom?username=${username}&page=${page}&size=${size}`
+    );
     return response.data;
-  }
+  },
 };
 
 export default medecinService;

@@ -1,6 +1,6 @@
-import './Card.css';
+import "./Card.css";
 
-export const Card = ({ children, title, subtitle, extraClass = '' }) => {
+export const Card = ({ children, title, subtitle, extraClass = "" }) => {
   return (
     <div className={`custom-card ${extraClass}`}>
       {(title || subtitle) && (
@@ -9,6 +9,7 @@ export const Card = ({ children, title, subtitle, extraClass = '' }) => {
           {subtitle && <p className="card-subtitle">{subtitle}</p>}
         </div>
       )}
+
       <div className="card-body">
         {children}
       </div>

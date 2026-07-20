@@ -6,7 +6,6 @@ import {
   FaCalendarAlt,
   FaFileMedical,
   FaInfoCircle,
-  FaSignOutAlt,
 } from "react-icons/fa";
 
 import "./Sidebar.css";
@@ -14,34 +13,34 @@ import "./Sidebar.css";
 const Sidebar = ({ isOpen, onClose }) => {
   const menuItems = [
     {
-      name: "Tableau de bord",
+      name: "Dashboard",
       path: "/dashboard",
-      icon: <FaTachometerAlt size={20} />,
+      icon: <FaTachometerAlt size={18} />,
     },
     {
       name: "Patients",
       path: "/patients",
-      icon: <FaUsers size={20} />,
+      icon: <FaUsers size={18} />,
     },
     {
       name: "Médecins",
-      path: "/doctors",
-      icon: <FaUserMd size={20} />,
+      path: "/medecins",
+      icon: <FaUserMd size={18} />,
     },
     {
       name: "Rendez-vous",
-      path: "/appointments",
-      icon: <FaCalendarAlt size={20} />,
+      path: "/rendez-vous",
+      icon: <FaCalendarAlt size={18} />,
     },
     {
       name: "Dossiers médicaux",
-      path: "/medical-records",
-      icon: <FaFileMedical size={20} />,
+      path: "/dossiers",
+      icon: <FaFileMedical size={18} />,
     },
     {
       name: "À propos",
       path: "/about",
-      icon: <FaInfoCircle size={20} />,
+      icon: <FaInfoCircle size={18} />,
     },
   ];
 
@@ -51,7 +50,7 @@ const Sidebar = ({ isOpen, onClose }) => {
         <div
           className="sidebar-overlay"
           onClick={onClose}
-        ></div>
+        />
       )}
 
       <aside className={`sidebar ${isOpen ? "open" : ""}`}>
@@ -61,9 +60,7 @@ const Sidebar = ({ isOpen, onClose }) => {
               key={item.path}
               to={item.path}
               className={({ isActive }) =>
-                isActive
-                  ? "sidebar-link active"
-                  : "sidebar-link"
+                isActive ? "sidebar-link active" : "sidebar-link"
               }
               onClick={onClose}
             >
@@ -72,13 +69,6 @@ const Sidebar = ({ isOpen, onClose }) => {
             </NavLink>
           ))}
         </nav>
-
-        <div className="sidebar-footer">
-          <button className="logout-btn">
-            <FaSignOutAlt size={20} />
-            <span>Déconnexion</span>
-          </button>
-        </div>
       </aside>
     </>
   );

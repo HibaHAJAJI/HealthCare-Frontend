@@ -1,8 +1,8 @@
-import API from './axios';
+import API from "./axios";
 
 const patientService = {
-  getAll: async () => {
-    const response = await API.get('/patients');
+  getAll: async (page = 0, size = 10) => {
+    const response = await API.get(`/patients?page=${page}&size=${size}`);
     return response.data;
   },
 
@@ -12,7 +12,7 @@ const patientService = {
   },
 
   create: async (patientData) => {
-    const response = await API.post('/patients', patientData);
+    const response = await API.post("/patients", patientData);
     return response.data;
   },
 
@@ -22,9 +22,15 @@ const patientService = {
   },
 
   delete: async (id) => {
-    const response = await API.delete(`/patients/${id}`);
+    await API.delete(`/patients/${id}`);
+  },
+
+  search: async (username, page = 0, size = 10) => {
+    const response = await API.get(
+      `/patients/triParNom?username=${username}&page=${page}&size=${size}`
+    );
     return response.data;
-  }
+  },
 };
 
 export default patientService;
