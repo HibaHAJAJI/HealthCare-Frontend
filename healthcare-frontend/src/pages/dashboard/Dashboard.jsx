@@ -1,13 +1,30 @@
-import { Card } from "../components/card/Card";
+import { useEffect, useState } from "react";
+import { Card } from "../../components/card/Card";
+import dashboardService from "../../services/dashboardService";
 import "./Dashboard.css";
 
 const Dashboard = () => {
-  const stats = {
+
+  const [stats, setStats] = useState({
     totalPatients: 0,
     totalMedecins: 0,
     totalRendezVous: 0,
     totalDossiers: 0,
-  };
+  });
+
+  useEffect(() => {
+    const fetchStats = async () => {
+      try {
+        const data = await dashboardService.getStats();
+        console.log(data); 
+        setStats(data);
+      } catch (error) {
+        console.error("Erreur Dashboard :", error);
+      }
+    };
+
+    fetchStats();
+  }, []);
 
   return (
     <div className="dashboard-page">

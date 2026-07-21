@@ -1,0 +1,22 @@
+.dashboard-page{
+display:flex;
+flex-direction:column;
+gap:25px;
+}
+
+.stats-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+gap:20px;
+}
+
+.stat-box h4{
+color:#64748b;
+margin-bottom:10px;
+}
+
+.stat-number{
+font-size:35px;
+font-weight:700;
+color:#18b6c8;
+}

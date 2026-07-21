@@ -1,0 +1,14 @@
+.about-page{
+display:flex;
+flex-direction:column;
+gap:25px;
+}
+
+.about-page h2{
+margin-bottom:15px;
+}
+
+.about-page p{
+line-height:1.7;
+color:#64748b;
+}

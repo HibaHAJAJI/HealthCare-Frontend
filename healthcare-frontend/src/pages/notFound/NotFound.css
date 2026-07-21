@@ -1,0 +1,29 @@
+.error-container{
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+height:70vh;
+text-align:center;
+}
+
+.error-container h2{
+font-size:60px;
+color:#18b6c8;
+margin-bottom:20px;
+}
+
+.error-container p{
+font-size:18px;
+color:#64748b;
+margin-bottom:30px;
+}
+
+.btn-back{
+padding:12px 25px;
+background:#18b6c8;
+border:none;
+border-radius:8px;
+color:white;
+cursor:pointer;
+}

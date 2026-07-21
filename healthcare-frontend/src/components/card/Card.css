@@ -1,35 +1,23 @@
-.custom-card {
-  background: #ffffff;
-  border: 1px solid #eef2f7;
-  border-radius: 12px;
-  padding: 20px;
-  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.05);
-  transition: all 0.3s ease;
+.custom-card{
+  background:white;
+  border-radius:15px;
+  padding:25px;
+  box-shadow:0 5px 15px rgba(0,0,0,.05);
 }
 
-.custom-card:hover {
-  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.08);
+.card-header{
+  margin-bottom:20px;
 }
 
-.card-header {
-  margin-bottom: 16px;
-  padding-bottom: 12px;
-  border-bottom: 1px solid #f1f5f9;
+.card-title{
+  font-size:20px;
+  margin-bottom:5px;
 }
 
-.card-title {
-  font-size: 18px;
-  font-weight: 600;
-  color: #1e293b;
-  margin: 0;
+.card-subtitle{
+  color:#64748b;
 }
 
-.card-subtitle {
-  margin-top: 4px;
-  font-size: 13px;
-  color: #64748b;
-}
-
-.card-body {
-  width: 100%;
+.card-body{
+  width:100%;
 }

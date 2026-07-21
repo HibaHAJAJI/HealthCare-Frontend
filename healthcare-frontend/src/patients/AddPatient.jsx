@@ -15,17 +15,18 @@ const AddPatient = () => {
     } catch (error) {
       console.error("Erreur lors de l'ajout du patient :", error);
 
-      alert(
+      const message =
         error.response?.data?.message ||
-        "Une erreur est survenue lors de l'ajout du patient."
-      );
+        "Une erreur est survenue lors de l'ajout du patient.";
+
+      alert(message);
     }
   };
 
   return (
     <div className="form-container">
       <div className="header-section">
-        <h2>Ajouter un Patient</h2>
+        <h2>Ajouter un patient</h2>
 
         <button
           type="button"

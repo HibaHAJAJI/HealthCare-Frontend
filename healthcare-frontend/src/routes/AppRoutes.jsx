@@ -1,11 +1,11 @@
 import { BrowserRouter as Router, Routes, Route, Outlet } from "react-router-dom";
 
-import Home from "../pages/Home";
-import Dashboard from "../pages/Dashboard";
-import Patients from "../pages/Patients";
-import Medecins from "../pages/Medecins";
-import About from "../pages/About";
-import NotFound from "../pages/NotFound";
+import Home from "../pages/home/Home";
+import Dashboard from "../pages/dashboard/Dashboard";
+import Patients from "../pages/patient/Patients";
+import Medecins from "../pages/medecin/Medecins";
+import About from "../pages/about/About";
+import NotFound from "../pages/notFound/NotFound";
 
 import AddPatient from "../patients/AddPatient";
 import EditPatient from "../patients/EditPatient";

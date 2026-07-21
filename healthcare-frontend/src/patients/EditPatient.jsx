@@ -18,16 +18,13 @@ const EditPatient = () => {
     const fetchPatient = async () => {
       try {
         const data = await patientService.getById(id);
-
         setPatient(data);
-
-
       } catch (error) {
         console.error("Erreur lors du chargement du patient :", error);
 
         alert(
           error.response?.data?.message ||
-          "Impossible de charger les informations du patient."
+            "Impossible de charger les informations du patient."
         );
 
         navigate("/patients");
@@ -41,6 +38,8 @@ const EditPatient = () => {
 
   const handleEditPatient = async (updatedData) => {
     try {
+      delete updatedData.password;
+
       await patientService.update(id, updatedData);
 
       alert("Patient mis à jour avec succès !");
@@ -50,7 +49,7 @@ const EditPatient = () => {
 
       alert(
         error.response?.data?.message ||
-        "Une erreur est survenue lors de la mise à jour."
+          "Une erreur est survenue lors de la mise à jour."
       );
     }
   };
@@ -69,6 +68,7 @@ const EditPatient = () => {
         <h2>Patient introuvable</h2>
 
         <button
+          type="button"
           className="btn-back"
           onClick={() => navigate("/patients")}
         >

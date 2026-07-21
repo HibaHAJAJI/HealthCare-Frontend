@@ -1,68 +1,74 @@
-.sidebar {
-  position: fixed;
-  top: 70px;
-  left: 0;
-  bottom: 0;
-  width: 220px;
-  background: #e8fbf7;
-  border-right: 1px solid #dbe7e4;
-  padding: 20px 14px;
-  z-index: 990;
-  transition: 0.3s ease;
+.sidebar{
+  position:fixed;
+  top:70px;
+  left:0;
+  width:250px;
+  height:calc(100vh - 70px);
+  background:#dff7f5;
+  padding:20px 15px;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+  border-right:1px solid #ddd;
 }
 
-.sidebar-menu {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
+.sidebar-menu{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
 }
 
-.sidebar-link {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 10px 14px;
-  border-radius: 10px;
-  text-decoration: none;
-  color: #4b5563;
-  font-size: 14px;
-  font-weight: 500;
-  transition: 0.3s;
+.sidebar-link{
+  display:flex;
+  align-items:center;
+  gap:15px;
+  padding:12px 15px;
+  border-radius:10px;
+  color:#475569;
+  font-weight:500;
 }
 
-.sidebar-link svg {
-  min-width: 20px;
+.sidebar-link:hover{
+  background:white;
 }
 
-.sidebar-link:hover {
-  background: #d9f4ee;
-  color: #16a3b8;
+.sidebar-link.active{
+  background:#18b6c8;
+  color:white;
 }
 
-.sidebar-link.active {
-  background: #d9f4ee;
-  color: #16a3b8;
-  font-weight: 600;
+.sidebar-footer{
+  border-top:1px solid #cbd5e1;
+  padding-top:20px;
 }
 
-@media (max-width: 768px) {
-  .sidebar {
-    transform: translateX(-100%);
-    top: 70px;
-    z-index: 1001;
-  }
+.logout-btn{
+  width:100%;
+  border:none;
+  background:none;
+  display:flex;
+  gap:15px;
+  padding:12px;
+  color:#ef4444;
+  cursor:pointer;
+}
 
-  .sidebar.open {
-    transform: translateX(0);
-  }
+@media(max-width:768px){
 
-  .sidebar-overlay {
-    position: fixed;
-    top: 70px;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.35);
-    z-index: 1000;
-  }
+.sidebar{
+transform:translateX(-100%);
+transition:.3s;
+z-index:999;
+}
+
+.sidebar.open{
+transform:translateX(0);
+}
+
+.sidebar-overlay{
+position:fixed;
+inset:0;
+background:rgba(0,0,0,.3);
+}
+
 }

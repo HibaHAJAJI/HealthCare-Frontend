@@ -19,24 +19,25 @@ const PatientsList = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  useEffect(() => {
-    const loadPatients = async () => {
-      try {
-        const data = await patientService.getAll();
+useEffect(() => {
+  const loadPatients = async () => {
+    try {
+      const data = await patientService.getAll();
 
-        setPatients(data);
+      console.log("Réponse API :", data);
 
- 
-      } catch (error) {
-        console.error("Erreur lors du chargement :", error);
-        setError("Impossible de charger la liste des patients.");
-      } finally {
-        setLoading(false);
-      }
-    };
+      setPatients(data.content || []);
+    } catch (error) {
+      console.error("Erreur lors du chargement :", error);
+      setError("Impossible de charger la liste des patients.");
+      setPatients([]);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    loadPatients();
-  }, []);
+  loadPatients();
+}, []);
 
   const handleDelete = async (id) => {
     if (!window.confirm("Voulez-vous supprimer ce patient ?")) return;
@@ -113,20 +114,19 @@ const PatientsList = () => {
             headers={[
               "ID",
               "Nom",
-              "Prénom",
               "Email",
               "Téléphone",
+              "Date Naissance",
               "Actions",
             ]}
           >
             {filteredPatients.length > 0 ? (
               filteredPatients.map((patient) => (
                 <tr key={patient.id}>
-                  <td>{patient.id}</td>
-                  <td>{patient.nom}</td>
-                  <td>{patient.prenom}</td>
+                  <td>{patient.username}</td>
                   <td>{patient.email}</td>
                   <td>{patient.telephone}</td>
+                  <td>{patient.dateNaissance}</td>
 
                   <td>
                     <div className="action-buttons-group">

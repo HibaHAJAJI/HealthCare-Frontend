@@ -87,13 +87,11 @@ const PatientDetails = () => {
       <Card>
         <div className="patient-profile-header">
           <div className="profile-avatar-large">
-            {patient.nom?.charAt(0).toUpperCase()}
+            {patient.username?.charAt(0).toUpperCase()}
           </div>
 
           <div className="profile-title-container">
-            <h2>
-              {patient.nom} {patient.prenom}
-            </h2>
+            <h2>{patient.username}</h2>
             <span className="badge badge-success">
               Dossier actif
             </span>
@@ -109,12 +107,9 @@ const PatientDetails = () => {
 
             <div className="block-body">
               <p><strong>Identifiant :</strong> #{patient.id}</p>
-              <p><strong>Nom :</strong> {patient.nom}</p>
-              <p><strong>Prénom :</strong> {patient.prenom}</p>
-              <p>
-                <strong>Âge :</strong>{" "}
-                {patient.age ? `${patient.age} ans` : "Non renseigné"}
-              </p>
+              <p><strong>Nom d'utilisateur :</strong> {patient.username}</p>
+              <p><strong>Date de naissance :</strong> {patient.dateNaissance || "Non renseignée"}</p>
+              <p><strong>Rôle :</strong> {patient.role}</p>
             </div>
           </div>
 
