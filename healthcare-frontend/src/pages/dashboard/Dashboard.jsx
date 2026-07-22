@@ -1,10 +1,8 @@
 import { useEffect, useState } from "react";
-import { Card } from "../../components/card/Card";
-import dashboardService from "../../services/dashboardService";
+import axios from "../../services/axios";
 import "./Dashboard.css";
 
 const Dashboard = () => {
-
   const [stats, setStats] = useState({
     totalPatients: 0,
     totalMedecins: 0,
@@ -12,55 +10,91 @@ const Dashboard = () => {
     totalDossiers: 0,
   });
 
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
   useEffect(() => {
-    const fetchStats = async () => {
+    const fetchCount = async (endpoint) => {
       try {
-        const data = await dashboardService.getStats();
-        console.log(data); 
-        setStats(data);
-      } catch (error) {
-        console.error("Erreur Dashboard :", error);
+        const response = await axios.get(`/${endpoint}?page=0&size=1`);
+        return response.data.totalElements || 0;
+      } catch (err) {
+        console.error(`Erreur lors du chargement de ${endpoint}:`, err);
+        return 0;
       }
     };
 
-    fetchStats();
+    const fetchDashboardData = async () => {
+      try {
+        const [
+          totalPatients,
+          totalMedecins,
+          totalRendezVous,
+          totalDossiers,
+        ] = await Promise.all([
+          fetchCount("patients"),
+          fetchCount("medecins"),
+          fetchCount("rendezvous"),
+          fetchCount("dossiers"),
+        ]);
+
+        setStats({
+          totalPatients,
+          totalMedecins,
+          totalRendezVous,
+          totalDossiers,
+        });
+      } catch (err) {
+        console.error("Erreur lors du chargement du dashboard :", err);
+        setError("Impossible de charger les statistiques.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchDashboardData();
   }, []);
 
-  return (
-    <div className="dashboard-page">
-      <div className="page-header">
-        <h1>Tableau de bord</h1>
-        <p>Aperçu général de l'activité de la clinique.</p>
+  if (loading) {
+    return (
+      <div className="dashboard-container">
+        <p>Chargement...</p>
       </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="dashboard-container">
+        <p className="error-text">{error}</p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="dashboard-container">
+      <h2>Dashboard</h2>
 
       <div className="stats-grid">
-        <Card>
-          <div className="stat-box">
-            <h4>Total Patients</h4>
-            <span className="stat-number">{stats.totalPatients}</span>
-          </div>
-        </Card>
+        <div className="stat-card">
+          <h3>Patients</h3>
+          <p className="stat-number">{stats.totalPatients}</p>
+        </div>
 
-        <Card>
-          <div className="stat-box">
-            <h4>Total Médecins</h4>
-            <span className="stat-number">{stats.totalMedecins}</span>
-          </div>
-        </Card>
+        <div className="stat-card">
+          <h3>Médecins</h3>
+          <p className="stat-number">{stats.totalMedecins}</p>
+        </div>
 
-        <Card>
-          <div className="stat-box">
-            <h4>Total Rendez-vous</h4>
-            <span className="stat-number">{stats.totalRendezVous}</span>
-          </div>
-        </Card>
+        <div className="stat-card">
+          <h3>Rendez-vous</h3>
+          <p className="stat-number">{stats.totalRendezVous}</p>
+        </div>
 
-        <Card>
-          <div className="stat-box">
-            <h4>Dossiers médicaux</h4>
-            <span className="stat-number">{stats.totalDossiers}</span>
-          </div>
-        </Card>
+        <div className="stat-card">
+          <h3>Dossiers médicaux</h3>
+          <p className="stat-number">{stats.totalDossiers}</p>
+        </div>
       </div>
     </div>
   );

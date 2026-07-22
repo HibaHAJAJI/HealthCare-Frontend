@@ -19,25 +19,24 @@ const PatientsList = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-useEffect(() => {
-  const loadPatients = async () => {
-    try {
-      const data = await patientService.getAll();
+  useEffect(() => {
+    const loadPatients = async () => {
+      try {
+        const response = await patientService.getAll();
 
-      console.log("Réponse API :", data);
+        setPatients(response.content);
 
-      setPatients(data.content || []);
-    } catch (error) {
-      console.error("Erreur lors du chargement :", error);
-      setError("Impossible de charger la liste des patients.");
-      setPatients([]);
-    } finally {
-      setLoading(false);
-    }
-  };
+      } catch (err) {
+        console.error(err);
+        setError("Impossible de charger la liste des patients.");
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  loadPatients();
-}, []);
+    loadPatients();
+  }, []);
+
 
   const handleDelete = async (id) => {
     if (!window.confirm("Voulez-vous supprimer ce patient ?")) return;
@@ -45,28 +44,27 @@ useEffect(() => {
     try {
       await patientService.delete(id);
 
-      setPatients((prevPatients) =>
-        prevPatients.filter((patient) => patient.id !== id)
+      setPatients((prev) =>
+        prev.filter((patient) => patient.id !== id)
       );
 
       alert("Patient supprimé avec succès !");
-    } catch (error) {
-      console.error("Erreur lors de la suppression :", error);
-      alert("Erreur lors de la suppression du patient.");
+    } catch (err) {
+      console.error(err);
+      alert("Erreur lors de la suppression.");
     }
   };
 
-  const filteredPatients = patients.filter((patient) => {
-    const fullName =
-      `${patient.nom || ""} ${patient.prenom || ""}`.toLowerCase();
 
-    return (
-      fullName.includes(searchTerm.toLowerCase()) ||
-      (patient.email || "")
-        .toLowerCase()
-        .includes(searchTerm.toLowerCase())
-    );
-  });
+  const filteredPatients = patients.filter((patient) =>
+    (patient.username ?? "")
+      .toLowerCase()
+      .includes(searchTerm.toLowerCase()) ||
+    (patient.email ?? "")
+      .toLowerCase()
+      .includes(searchTerm.toLowerCase())
+  );
+
 
   if (loading) {
     return (
@@ -76,8 +74,10 @@ useEffect(() => {
     );
   }
 
+
   return (
     <div className="patients-list-page">
+
       <div className="page-header">
         <div>
           <h1>Patients</h1>
@@ -86,88 +86,124 @@ useEffect(() => {
 
         <Link to="/patients/add" className="btn-primary">
           <FaPlus size={18} />
-          <span>Nouveau Patient</span>
+          Nouveau Patient
         </Link>
       </div>
 
+
       <Card>
+
         <div className="table-actions">
           <div className="search-container">
-            <FaSearch
-              size={18}
-              className="search-icon-inside"
-            />
+
+            <FaSearch size={18} />
 
             <input
               type="text"
-              placeholder="Rechercher par nom ou email..."
+              placeholder="Rechercher..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
+
           </div>
         </div>
 
+
         {error ? (
-          <div className="error-container">{error}</div>
+          <div className="error-container">
+            {error}
+          </div>
         ) : (
+
           <Table
             headers={[
               "ID",
-              "Nom",
+              "Nom d'utilisateur",
               "Email",
               "Téléphone",
-              "Date Naissance",
+              "Date de naissance",
               "Actions",
             ]}
           >
-            {filteredPatients.length > 0 ? (
-              filteredPatients.map((patient) => (
-                <tr key={patient.id}>
-                  <td>{patient.username}</td>
-                  <td>{patient.email}</td>
-                  <td>{patient.telephone}</td>
-                  <td>{patient.dateNaissance}</td>
+
+            {filteredPatients.length === 0 ? (
+
+              <tr>
+                <td colSpan={6}>
+                  Aucun patient trouvé.
+                </td>
+              </tr>
+
+            ) : (
+
+              filteredPatients.map((patient, index) => (
+
+                <tr
+                  key={patient.id ?? `${patient.telephone}-${patient.dateNaissance}-${index}`}
+                >
+
+                  <td>{patient.id}</td>
 
                   <td>
+                    {patient.username}
+                  </td>
+
+                  <td>
+                    {patient.email}
+                  </td>
+
+                  <td>
+                    {patient.telephone}
+                  </td>
+
+                  <td>
+                    {patient.dateNaissance}
+                  </td>
+
+
+                  <td>
+
                     <div className="action-buttons-group">
+
                       <Link
                         to={`/patients/${patient.id}`}
                         className="action-btn view"
-                        title="Voir les détails"
                       >
-                        <FaEye size={18} />
+                        <FaEye />
                       </Link>
+
 
                       <Link
                         to={`/patients/edit/${patient.id}`}
                         className="action-btn edit"
-                        title="Modifier"
                       >
-                        <FaEdit size={18} />
+                        <FaEdit />
                       </Link>
 
+
                       <button
-                        type="button"
                         className="action-btn delete"
-                        title="Supprimer"
                         onClick={() => handleDelete(patient.id)}
                       >
-                        <FaTrash size={18} />
+                        <FaTrash />
                       </button>
+
                     </div>
+
                   </td>
+
                 </tr>
+
               ))
-            ) : (
-              <tr>
-                <td colSpan={6} className="no-data">
-                  Aucun patient trouvé.
-                </td>
-              </tr>
+
             )}
+
           </Table>
+
         )}
+
       </Card>
+
     </div>
   );
 };
