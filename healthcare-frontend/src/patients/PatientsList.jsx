@@ -96,7 +96,7 @@ const PatientsList = () => {
         <div className="table-actions">
           <div className="search-container">
 
-            <FaSearch size={18} />
+            <FaSearch className="search-icon-inside"  />
 
             <input
               type="text"
