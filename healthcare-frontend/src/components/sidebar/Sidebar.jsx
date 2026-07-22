@@ -6,11 +6,14 @@ import {
   FaCalendarAlt,
   FaFileMedical,
   FaInfoCircle,
+  FaSignOutAlt,
 } from "react-icons/fa";
-
+import { useAuth } from "../../context/AuthContext";
 import "./Sidebar.css";
 
 const Sidebar = ({ isOpen, onClose }) => {
+  const { logout } = useAuth();
+
   const menuItems = [
     {
       name: "Dashboard",
@@ -44,6 +47,11 @@ const Sidebar = ({ isOpen, onClose }) => {
     },
   ];
 
+  const handleLogout = () => {
+    if (onClose) onClose();
+    logout();
+  };
+
   return (
     <>
       {isOpen && (
@@ -54,21 +62,30 @@ const Sidebar = ({ isOpen, onClose }) => {
       )}
 
       <aside className={`sidebar ${isOpen ? "open" : ""}`}>
-        <nav className="sidebar-menu">
-          {menuItems.map((item) => (
-            <NavLink
-              key={item.path}
-              to={item.path}
-              className={({ isActive }) =>
-                isActive ? "sidebar-link active" : "sidebar-link"
-              }
-              onClick={onClose}
-            >
-              {item.icon}
-              <span>{item.name}</span>
-            </NavLink>
-          ))}
-        </nav>
+        <div className="sidebar-container">
+          <nav className="sidebar-menu">
+            {menuItems.map((item) => (
+              <NavLink
+                key={item.path}
+                to={item.path}
+                className={({ isActive }) =>
+                  isActive ? "sidebar-link active" : "sidebar-link"
+                }
+                onClick={onClose}
+              >
+                {item.icon}
+                <span>{item.name}</span>
+              </NavLink>
+            ))}
+          </nav>
+
+          <div className="sidebar-footer">
+            <button className="sidebar-link logout-btn" onClick={handleLogout}>
+              <FaSignOutAlt size={18} />
+              <span>Déconnexion</span>
+            </button>
+          </div>
+        </div>
       </aside>
     </>
   );
