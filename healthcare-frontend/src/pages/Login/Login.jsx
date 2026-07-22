@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { FaLock, FaUser, FaSpinner } from "react-icons/fa";
+import { useNavigate, Link } from "react-router-dom";
+import { FaLock, FaUser, FaSpinner, FaHeartbeat } from "react-icons/fa";
 import authService from "../../services/authService";
 import { useAuth } from "../../context/AuthContext";
 import "./Login.css";
@@ -12,7 +12,7 @@ const Login = () => {
   const [error, setError] = useState("");
 
   const navigate = useNavigate();
-  const { login } = useAuth(); 
+  const { login } = useAuth();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -38,7 +38,14 @@ const Login = () => {
   return (
     <div className="login-container">
       <div className="login-card">
-        <h2>Connexion</h2>
+        <div className="login-header">
+          <div className="brand-logo">
+            <FaHeartbeat className="brand-icon" />
+            <span>HealthCare+</span>
+          </div>
+          <h2>Connexion</h2>
+          <p className="login-subtitle">Accédez à votre espace médical</p>
+        </div>
 
         {error && <div className="error-container">{error}</div>}
 
@@ -46,7 +53,7 @@ const Login = () => {
           <div className="form-group">
             <label htmlFor="username">Nom d'utilisateur</label>
             <div className="input-icon-wrapper">
-              <FaUser className="input-icon" size={18} />
+              <FaUser className="input-icon" />
               <input
                 id="username"
                 type="text"
@@ -62,7 +69,7 @@ const Login = () => {
           <div className="form-group">
             <label htmlFor="password">Mot de passe</label>
             <div className="input-icon-wrapper">
-              <FaLock className="input-icon" size={18} />
+              <FaLock className="input-icon" />
               <input
                 id="password"
                 type="password"
@@ -79,6 +86,15 @@ const Login = () => {
             {loading ? <FaSpinner className="spinner" size={20} /> : "Se connecter"}
           </button>
         </form>
+
+        <div className="login-footer">
+          <div className="divider">
+            <span>Vous n'avez pas de compte ?</span>
+          </div>
+          <Link to="/register" className="btn-register-link">
+            Créer un compte
+          </Link>
+        </div>
       </div>
     </div>
   );
