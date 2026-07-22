@@ -1,13 +1,25 @@
-import { useEffect } from 'react';
-import { useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { patientSchema } from '../validation/patientSchema';
-import './Patient.css';
+import { useEffect } from "react";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { patientSchema } from "../validation/patientSchema";
+import "./Patient.css";
 
-const PatientForm = ({ onSubmit, initialData, submitLabel = "Enregistrer" }) => {
-  const { register, handleSubmit, reset, formState: { errors } } = useForm({
-    resolver: yupResolver(patientSchema)
-  });
+const PatientForm = ({
+  onSubmit,
+  initialData,
+  submitLabel = "Enregistrer",
+}) => {
+  
+const isEdit = !!initialData;
+
+const {
+  register,
+  handleSubmit,
+  reset,
+  formState: { errors },
+} = useForm({
+  resolver: yupResolver(patientSchema(isEdit)),
+});
 
   useEffect(() => {
     if (initialData) {
@@ -18,51 +30,75 @@ const PatientForm = ({ onSubmit, initialData, submitLabel = "Enregistrer" }) => 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="patient-form">
       <div className="form-group">
-        <label>Nom Complet</label>
-        <input 
-          type="text" 
-          placeholder="Ex: Anas Bennani" 
-          className={errors.fullName ? 'error' : ''}
-          {...register('fullName')} 
+        <label>Nom d'utilisateur</label>
+        <input
+          type="text"
+          placeholder="Ex : karima_patient"
+          className={errors.username ? "error" : ""}
+          {...register("username")}
         />
-        {errors.fullName && <p className="error-text">{errors.fullName.message}</p>}
+        {errors.username && (
+          <p className="error-text">{errors.username.message}</p>
+        )}
       </div>
 
       <div className="form-group">
         <label>Adresse Email</label>
-        <input 
-          type="email" 
-          placeholder="Ex: a.bennani@email.com" 
-          className={errors.email ? 'error' : ''}
-          {...register('email')} 
+        <input
+          type="email"
+          placeholder="Ex : karima@gmail.com"
+          className={errors.email ? "error" : ""}
+          {...register("email")}
         />
-        {errors.fullName && <p className="error-text">{errors.email?.message}</p>}
+        {errors.email && (
+          <p className="error-text">{errors.email.message}</p>
+        )}
       </div>
+
+      {!initialData && (
+        <div className="form-group">
+          <label>Mot de passe</label>
+          <input
+            type="password"
+            placeholder="********"
+            className={errors.password ? "error" : ""}
+            {...register("password")}
+          />
+          {errors.password && (
+            <p className="error-text">{errors.password.message}</p>
+          )}
+        </div>
+      )}
 
       <div className="form-group">
         <label>Téléphone</label>
-        <input 
-          type="text" 
-          placeholder="Ex: +212 65432109" 
-          className={errors.phone ? 'error' : ''}
-          {...register('phone')} 
+        <input
+          type="text"
+          placeholder="Ex : 0612243344"
+          className={errors.telephone ? "error" : ""}
+          {...register("telephone")}
         />
-        {errors.phone && <p className="error-text">{errors.phone.message}</p>}
+        {errors.telephone && (
+          <p className="error-text">{errors.telephone.message}</p>
+        )}
       </div>
 
       <div className="form-group">
-        <label>Âge</label>
-        <input 
-          type="number" 
-          placeholder="Ex: 28" 
-          className={errors.age ? 'error' : ''}
-          {...register('age')} 
+        <label>Date de naissance</label>
+        <input
+          type="date"
+          className={errors.dateNaissance ? "error" : ""}
+          {...register("dateNaissance")}
         />
-        {errors.age && <p className="error-text">{errors.age.message}</p>}
+        {errors.dateNaissance && (
+          <p className="error-text">{errors.dateNaissance.message}</p>
+        )}
       </div>
 
       <div className="form-actions">
-        <button type="submit" className="btn-submit">{submitLabel}</button>
+        <button type="submit" className="btn-submit">
+          {submitLabel}
+        </button>
       </div>
     </form>
   );

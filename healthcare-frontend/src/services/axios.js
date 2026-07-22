@@ -1,32 +1,22 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:8080/api/auth/";
+const API = axios.create({
+  baseURL: "http://localhost:8080/api",
+});
 
-const login = async (username, password) => {
-  const response = await axios.post(API_URL + "login", {
-    username,
-    password,
-  });
-
-  if (response.data && response.data.token) {
-    localStorage.setItem("user", JSON.stringify(response.data));
+API.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem("token");
+    
+    if (token) {
+      config.headers.Authorization = `Bearer ${token.replace(/^"|"$/g, "")}`;
+    }
+    
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
   }
+);
 
-  return response.data;
-};
-
-const logout = () => {
-  localStorage.removeItem("user");
-};
-
-const getCurrentUser = () => {
-  return JSON.concat(localStorage.getItem("user"));
-};
-
-const authService = {
-  login,
-  logout,
-  getCurrentUser,
-};
-
-export default authService;
+export default API;

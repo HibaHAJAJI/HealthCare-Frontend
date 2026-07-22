@@ -6,26 +6,27 @@ import {
   FaArrowRight,
 } from "react-icons/fa";
 
-import { Card } from "../components/card/Card";
+import { Card } from "../../components/card/Card";
+import "./Home.css";
 
 const Home = () => {
   return (
     <div className="home-container">
       <section className="hero-section">
         <h1 className="hero-title">
-          Une gestion clinique simplifiée avec <span>HealthCare+</span>
+          Bienvenue sur <span>HealthCare+</span>
         </h1>
 
         <p className="hero-subtitle">
-          Pilotez votre établissement de santé, suivez vos patients et
-          planifiez vos rendez-vous en quelques clics sur une seule et même
-          plateforme.
+          Une plateforme moderne de gestion médicale permettant de gérer les
+          patients, les médecins, les rendez-vous et les dossiers médicaux
+          depuis une interface simple et intuitive.
         </p>
 
         <div className="hero-actions">
           <Link to="/dashboard" className="btn-primary">
-            Accéder au Dashboard
-            <FaArrowRight size={18} style={{ marginLeft: "8px" }} />
+            Accéder au tableau de bord
+            <FaArrowRight size={16} />
           </Link>
         </div>
       </section>
@@ -36,13 +37,13 @@ const Home = () => {
             <FaUsers size={24} />
           </div>
 
-          <h4 className="feature-title">
-            Gestion des Patients
-          </h4>
+          <h3 className="feature-title">
+            Gestion des patients
+          </h3>
 
           <p className="feature-text">
-            Suivi médical complet, fiches de contact et historiques de
-            traitement sécurisés.
+            Ajouter, modifier, consulter et supprimer les informations des
+            patients.
           </p>
         </Card>
 
@@ -51,13 +52,13 @@ const Home = () => {
             <FaHeartbeat size={24} />
           </div>
 
-          <h4 className="feature-title">
-            Suivi des Consultations
-          </h4>
+          <h3 className="feature-title">
+            Gestion des rendez-vous
+          </h3>
 
           <p className="feature-text">
-            Prenez des rendez-vous et gérez le planning de vos médecins en
-            temps réel.
+            Planifier et suivre facilement les rendez-vous entre médecins et
+            patients.
           </p>
         </Card>
 
@@ -66,13 +67,12 @@ const Home = () => {
             <FaShieldAlt size={24} />
           </div>
 
-          <h4 className="feature-title">
-            Dossiers Sécurisés
-          </h4>
+          <h3 className="feature-title">
+            Dossiers médicaux
+          </h3>
 
           <p className="feature-text">
-            Respect de la confidentialité et du secret médical grâce à un
-            cryptage de haut niveau.
+            Centraliser les dossiers médicaux pour un suivi rapide et sécurisé.
           </p>
         </Card>
       </section>
