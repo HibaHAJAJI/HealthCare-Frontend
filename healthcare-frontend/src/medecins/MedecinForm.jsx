@@ -1,13 +1,22 @@
-import  { useEffect } from 'react';
-import { useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { medecinSchema } from '../validation/medecinSchema';
-import './Medecin.css';
+import { useEffect } from "react";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { medecinSchema } from "../validation/medecinSchema";
+import "./Medecin.css";
 
-const MedecinForm = ({ onSubmit, initialData, submitLabel = "Enregistrer" }) => {
-  const { register, handleSubmit, reset, formState: { errors } } = useForm({
+const MedecinForm = ({
+  onSubmit,
+  initialData,
+  submitLabel = "Enregistrer",
+}) => {
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm({
     resolver: yupResolver(medecinSchema),
-    defaultValues: initialData || {}
+    defaultValues: initialData || {},
   });
 
   useEffect(() => {
@@ -20,62 +29,82 @@ const MedecinForm = ({ onSubmit, initialData, submitLabel = "Enregistrer" }) => 
     <form onSubmit={handleSubmit(onSubmit)} className="medecin-form">
       <div className="form-group">
         <label>Nom</label>
-        <input 
-          type="text" 
-          placeholder="Ex: Johnson" 
-          className={errors.nom ? 'error' : ''}
-          {...register('nom')} 
+
+        <input
+          type="text"
+          placeholder="Nom"
+          className={errors.nom ? "error" : ""}
+          {...register("nom")}
         />
-        {errors.nom && <p className="error-text">{errors.nom.message}</p>}
+
+        {errors.nom && (
+          <p className="error-text">{errors.nom.message}</p>
+        )}
       </div>
 
       <div className="form-group">
         <label>Prénom</label>
-        <input 
-          type="text" 
-          placeholder="Ex: Sarah" 
-          className={errors.prenom ? 'error' : ''}
-          {...register('prenom')} 
+
+        <input
+          type="text"
+          placeholder="Prénom"
+          className={errors.prenom ? "error" : ""}
+          {...register("prenom")}
         />
-        {errors.prenom && <p className="error-text">{errors.prenom.message}</p>}
+
+        {errors.prenom && (
+          <p className="error-text">{errors.prenom.message}</p>
+        )}
       </div>
 
       <div className="form-group">
         <label>Spécialité</label>
-        <input 
-          type="text" 
-          placeholder="Ex: Cardiologie" 
-          className={errors.speciality ? 'error' : ''}
-          {...register('speciality')} 
+
+        <input
+          type="text"
+          placeholder="Spécialité"
+          className={errors.speciality ? "error" : ""}
+          {...register("speciality")}
         />
-        {errors.speciality && <p className="error-text">{errors.speciality.message}</p>}
+
+        {errors.speciality && (
+          <p className="error-text">{errors.speciality.message}</p>
+        )}
       </div>
 
       <div className="form-group">
-        <label>Adresse Email</label>
-        <input 
-          type="email" 
-          placeholder="Ex: s.johnson@healthcare.com" 
-          className={errors.email ? 'error' : ''}
-          {...register('email')} 
+        <label>Email</label>
+
+        <input
+          type="email"
+          placeholder="Email"
+          className={errors.email ? "error" : ""}
+          {...register("email")}
         />
-        {errors.email && <p className="error-text">{errors.email.message}</p>}
+
+        {errors.email && (
+          <p className="error-text">{errors.email.message}</p>
+        )}
       </div>
 
       <div className="form-group">
         <label>Téléphone</label>
-        <input 
-          type="text" 
-          placeholder="Ex: +212 611223344" 
-          className={errors.telephone ? 'error' : ''}
-          {...register('telephone')} 
+
+        <input
+          type="text"
+          placeholder="Téléphone"
+          className={errors.telephone ? "error" : ""}
+          {...register("telephone")}
         />
-        {errors.telephone && <p className="error-text">{errors.telephone.message}</p>}
+
+        {errors.telephone && (
+          <p className="error-text">{errors.telephone.message}</p>
+        )}
       </div>
 
-      <div className="form-actions">
-        <button type="submit" className="btn-submit">{submitLabel}</button>
-      </div>
+      <button type="submit" className="btn-submit">
+        {submitLabel}
+      </button>
     </form>
   );
 };

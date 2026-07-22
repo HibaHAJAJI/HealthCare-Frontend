@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-
 import {
   FaSearch,
   FaPlus,
@@ -25,11 +24,11 @@ const MedecinsList = () => {
   useEffect(() => {
     const loadMedecins = async () => {
       try {
-        const data = await medecinService.getAll();
-        setMedecins(data);
+        const response = await medecinService.getAll();
 
+        setMedecins(response.content);
       } catch (err) {
-        console.error("Erreur lors du chargement des médecins :", err);
+        console.error(err);
         setError("Impossible de charger la liste des médecins.");
       } finally {
         setLoading(false);
@@ -40,11 +39,7 @@ const MedecinsList = () => {
   }, []);
 
   const handleDelete = async (id) => {
-    const confirmDelete = window.confirm(
-      "Voulez-vous supprimer ce médecin ?"
-    );
-
-    if (!confirmDelete) return;
+    if (!window.confirm("Voulez-vous supprimer ce médecin ?")) return;
 
     try {
       await medecinService.delete(id);
@@ -55,20 +50,19 @@ const MedecinsList = () => {
 
       alert("Médecin supprimé avec succès !");
     } catch (err) {
-      console.error("Erreur lors de la suppression :", err);
-      alert("Erreur lors de la suppression du médecin.");
+      console.error(err);
+      alert("Erreur lors de la suppression.");
     }
   };
 
-  const filteredMedecins = medecins.filter((m) => {
-    const fullName =
-      `${m.nom || ""} ${m.prenom || ""}`.toLowerCase();
-
-    return (
-      fullName.includes(searchTerm.toLowerCase()) ||
-      m.speciality?.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-  });
+  const filteredMedecins = medecins.filter((medecin) =>
+    (medecin.username ?? "")
+      .toLowerCase()
+      .includes(searchTerm.toLowerCase()) ||
+    (medecin.email ?? "")
+      .toLowerCase()
+      .includes(searchTerm.toLowerCase())
+  );
 
   if (loading) {
     return (
@@ -83,23 +77,23 @@ const MedecinsList = () => {
       <div className="page-header">
         <div>
           <h1>Médecins</h1>
-          <p>Gestion de l'équipe médicale.</p>
+          <p>Liste des médecins enregistrés.</p>
         </div>
 
-        <Link to="/doctors/add" className="btn-primary">
+        <Link to="/medecins/add" className="btn-primary">
           <FaPlus size={18} />
-          <span>Nouveau Médecin</span>
+          Nouveau Médecin
         </Link>
       </div>
 
       <Card>
         <div className="table-actions">
           <div className="search-container">
-            <FaSearch size={18} className="search-icon-inside" />
+            <FaSearch className="search-icon-inside" />
 
             <input
               type="text"
-              placeholder="Rechercher par nom ou spécialité..."
+              placeholder="Rechercher..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
@@ -112,60 +106,52 @@ const MedecinsList = () => {
           <Table
             headers={[
               "ID",
-              "Nom",
-              "Prénom",
-              "Spécialité",
+              "Nom d'utilisateur",
               "Email",
+              "Téléphone",
+              "Spécialité",
               "Actions",
             ]}
           >
-            {filteredMedecins.length > 0 ? (
-              filteredMedecins.map((m) => (
-                <tr key={m.id}>
-                  <td>{m.id}</td>
-                  <td>
-                    <strong>{m.nom}</strong>
-                  </td>
-                  <td>{m.prenom}</td>
-                  <td>{m.speciality}</td>
-                  <td>{m.email}</td>
+            {filteredMedecins.length === 0 ? (
+              <tr>
+                <td colSpan={6}>Aucun médecin trouvé.</td>
+              </tr>
+            ) : (
+              filteredMedecins.map((medecin) => (
+                <tr key={medecin.id}>
+                  <td>{medecin.id}</td>
+                  <td>{medecin.username}</td>
+                  <td>{medecin.email}</td>
+                  <td>{medecin.telephone}</td>
+                  <td>{medecin.speciality}</td>
 
                   <td>
                     <div className="action-buttons-group">
                       <Link
-                        to={`/doctors/${m.id}`}
+                        to={`/medecins/${medecin.id}`}
                         className="action-btn view"
-                        title="Détails"
                       >
-                        <FaEye size={18} />
+                        <FaEye />
                       </Link>
 
                       <Link
-                        to={`/doctors/edit/${m.id}`}
+                        to={`/medecins/edit/${medecin.id}`}
                         className="action-btn edit"
-                        title="Modifier"
                       >
-                        <FaEdit size={18} />
+                        <FaEdit />
                       </Link>
 
                       <button
-                        type="button"
                         className="action-btn delete"
-                        title="Supprimer"
-                        onClick={() => handleDelete(m.id)}
+                        onClick={() => handleDelete(medecin.id)}
                       >
-                        <FaTrash size={18} />
+                        <FaTrash />
                       </button>
                     </div>
                   </td>
                 </tr>
               ))
-            ) : (
-              <tr>
-                <td colSpan={6} className="no-data">
-                  Aucun médecin trouvé.
-                </td>
-              </tr>
             )}
           </Table>
         )}

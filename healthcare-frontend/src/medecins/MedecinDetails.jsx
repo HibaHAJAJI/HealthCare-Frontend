@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
-
 import {
   FaSpinner,
   FaArrowLeft,
@@ -23,23 +22,19 @@ const MedecinDetails = () => {
   const [error, setError] = useState("");
 
   useEffect(() => {
-    const fetchDoctorDetails = async () => {
+    const fetchMedecinDetails = async () => {
       try {
         const data = await doctorService.getById(id);
-
         setMedecin(data);
-
-
-
       } catch (err) {
-        console.error("Erreur de récupération du médecin :", err);
+        console.error("Erreur lors de la récupération du médecin :", err);
         setError("Impossible de charger les détails de ce médecin.");
       } finally {
         setLoading(false);
       }
     };
 
-    fetchDoctorDetails();
+    fetchMedecinDetails();
   }, [id]);
 
   if (loading) {
@@ -60,7 +55,7 @@ const MedecinDetails = () => {
         <button
           type="button"
           className="btn-back"
-          onClick={() => navigate("/doctors")}
+          onClick={() => navigate("/medecins")}
         >
           Retour à la liste
         </button>
@@ -74,14 +69,14 @@ const MedecinDetails = () => {
         <button
           type="button"
           className="btn-back"
-          onClick={() => navigate("/doctors")}
+          onClick={() => navigate("/medecins")}
         >
           <FaArrowLeft size={16} />
           <span>Retour</span>
         </button>
 
         <Link
-          to={`/doctors/edit/${medecin.id}`}
+          to={`/medecins/edit/${medecin.id}`}
           className="btn-primary"
         >
           <FaEdit size={16} />
@@ -92,16 +87,14 @@ const MedecinDetails = () => {
       <Card>
         <div className="doctor-profile-header">
           <div className="profile-avatar-large">
-            {medecin.nom?.charAt(0).toUpperCase()}
+            {medecin.username?.charAt(0).toUpperCase()}
           </div>
 
           <div className="profile-title-container">
-            <h2>
-              Dr. {medecin.prenom} {medecin.nom}
-            </h2>
+            <h2>Dr. {medecin.username}</h2>
 
             <span className="badge badge-success">
-              {medecin.speciality}
+              {medecin.specialite || "Spécialité non renseignée"}
             </span>
           </div>
         </div>
@@ -110,7 +103,7 @@ const MedecinDetails = () => {
           <div className="info-block">
             <div className="block-header">
               <FaAward size={18} />
-              <h3>Informations Professionnelles</h3>
+              <h3>Informations professionnelles</h3>
             </div>
 
             <div className="block-body">
@@ -119,7 +112,12 @@ const MedecinDetails = () => {
               </p>
 
               <p>
-                <strong>Spécialité :</strong> {medecin.speciality}
+                <strong>Nom d'utilisateur :</strong> {medecin.username}
+              </p>
+
+              <p>
+                <strong>Spécialité :</strong>{" "}
+                {medecin.specialite || "Non renseignée"}
               </p>
             </div>
           </div>

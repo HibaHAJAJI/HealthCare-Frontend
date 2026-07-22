@@ -18,14 +18,11 @@ const EditMedecin = () => {
     const fetchMedecinData = async () => {
       try {
         const data = await medecinService.getById(id);
-
         setMedecin(data);
-
-
       } catch (error) {
         console.error("Erreur de récupération du médecin :", error);
         alert("Impossible de charger les données de ce médecin.");
-        navigate("/doctors");
+        navigate("/medecins");
       } finally {
         setLoading(false);
       }
@@ -34,18 +31,20 @@ const EditMedecin = () => {
     fetchMedecinData();
   }, [id, navigate]);
 
+
   const handleEditMedecin = async (updatedData) => {
     try {
       await medecinService.update(id, updatedData);
 
       alert("Médecin mis à jour avec succès !");
-      navigate("/doctors");
+      navigate("/medecins");
 
     } catch (error) {
       console.error("Erreur lors de la modification :", error);
       alert("Erreur lors de la mise à jour sur le serveur.");
     }
   };
+
 
   if (loading) {
     return (
@@ -55,6 +54,7 @@ const EditMedecin = () => {
     );
   }
 
+
   if (!medecin) {
     return (
       <div className="error-container">
@@ -62,7 +62,7 @@ const EditMedecin = () => {
 
         <button
           className="btn-back"
-          onClick={() => navigate("/doctors")}
+          onClick={() => navigate("/medecins")}
         >
           Retour
         </button>
@@ -70,25 +70,33 @@ const EditMedecin = () => {
     );
   }
 
+
   return (
     <div className="form-container">
+
       <div className="header-section">
-        <h2>Modifier le Médecin</h2>
+
+        <h2>
+          Modifier le médecin
+        </h2>
 
         <button
           type="button"
           className="btn-back"
-          onClick={() => navigate("/doctors")}
+          onClick={() => navigate("/medecins")}
         >
           Retour
         </button>
+
       </div>
+
 
       <MedecinForm
         initialData={medecin}
         onSubmit={handleEditMedecin}
         submitLabel="Mettre à jour"
       />
+
     </div>
   );
 };
