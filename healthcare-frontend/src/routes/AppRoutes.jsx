@@ -2,7 +2,8 @@ import { BrowserRouter as Router, Routes, Route, Outlet } from "react-router-dom
 
 import Login from "../pages/Login/Login";
 import Register from "../pages/Register/Register";
-import ProtectedRoute from "./ProtectedRoute";
+import AuthGuard from "../guards/AuthGuard";
+import RoleGuard from "../guards/RoleGuard";
 
 import Home from "../pages/home/Home";
 import Dashboard from "../pages/dashboard/Dashboard";
@@ -26,16 +27,15 @@ import Footer from "../components/footer/Footer";
 const MainLayout = () => {
   return (
     <div className="app-layout">
-      <Sidebar />
-
-      <div className="main-content">
-        <Navbar />
-
-        <main className="page-content">
-          <Outlet />
-        </main>
-
-        <Footer />
+      <Navbar />
+      <div className="app-body">
+        <Sidebar />
+        <div className="main-content">
+          <main className="page-content">
+            <Outlet />
+          </main>
+          <Footer />
+        </div>
       </div>
     </div>
   );
@@ -45,11 +45,10 @@ const AppRoutes = () => {
   return (
     <Router>
       <Routes>
-
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
 
-        <Route element={<ProtectedRoute />}>
+        <Route element={<AuthGuard />}>
           <Route path="/" element={<MainLayout />}>
             <Route index element={<Home />} />
             <Route path="dashboard" element={<Dashboard />} />
@@ -60,15 +59,16 @@ const AppRoutes = () => {
             <Route path="patients/edit/:id" element={<EditPatient />} />
             <Route path="patients/:id" element={<PatientDetails />} />
 
-            <Route path="medecins" element={<Medecins />} />
-            <Route path="medecins/add" element={<AddMedecin />} />
-            <Route path="medecins/edit/:id" element={<EditMedecin />} />
-            <Route path="medecins/:id" element={<MedecinDetails />} />
+            <Route element={<RoleGuard allowedRoles={["ADMIN"]} />}>
+              <Route path="medecins" element={<Medecins />} />
+              <Route path="medecins/add" element={<AddMedecin />} />
+              <Route path="medecins/edit/:id" element={<EditMedecin />} />
+              <Route path="medecins/:id" element={<MedecinDetails />} />
+            </Route>
           </Route>
         </Route>
 
         <Route path="*" element={<NotFound />} />
-
       </Routes>
     </Router>
   );
