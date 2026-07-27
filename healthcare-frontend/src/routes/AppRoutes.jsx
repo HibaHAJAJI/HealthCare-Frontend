@@ -56,29 +56,28 @@ const AppRoutes = () => {
         <Route path="dashboard" element={<Dashboard />} />
         <Route path="about" element={<About />} />
 
-       <Route element={<RoleGuard allowedRoles={["ADMIN", "PATIENT"]} />}>
-          <Route path="patients" element={<Patients />} />
-          <Route path="patients/add" element={<AddPatient />} />
+ <Route element={<RoleGuard allowedRoles={["ADMIN"]} />}>
 
-          <Route path="medecins" element={<Medecins />} />
-          <Route path="medecins/add" element={<AddMedecin />} />
-          <Route path="medecins/edit/:id" element={<EditMedecin />} />
-          <Route path="medecins/:id" element={<MedecinDetails />} />
-        </Route>
+  <Route path="patients" element={<Patients />} />
+  <Route path="patients/add" element={<AddPatient />} />
+  <Route path="medecins" element={<Medecins />} />
+  <Route path="medecins/add" element={<AddMedecin />} />
+  <Route path="medecins/edit/:id" element={<EditMedecin />} />
+  <Route path="medecins/:id" element={<MedecinDetails />} />
 
-        <Route element={<RoleGuard allowedRoles={["ADMIN", "PATIENT"]} />}>
-          <Route path="patients/edit/:id" element={<EditPatient />} />
-        </Route>
+</Route>
 
-        <Route
-          element={
-            <RoleGuard
-              allowedRoles={["ADMIN", "MEDECIN", "PATIENT"]}
-            />
-          }
-        >
-          <Route path="patients/:id" element={<PatientDetails />} />
-        </Route>
+<Route element={<RoleGuard allowedRoles={["ADMIN", "PATIENT"]} />}>
+  <Route path="patients/edit/:id" element={<EditPatient />} />
+</Route>
+
+<Route
+  element={
+    <RoleGuard allowedRoles={["ADMIN", "MEDECIN", "PATIENT"]} />
+  }
+>
+  <Route path="patients/:id" element={<PatientDetails />} />
+</Route>
 
       </Route>
     </Route>

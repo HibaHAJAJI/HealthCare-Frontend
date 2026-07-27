@@ -21,10 +21,20 @@ const Login = () => {
 
     try {
       const response = await authService.login(username, password);
+
       if (response && response.token) {
-        login(response.user || { username }, response.token);
+
+        const user = {
+          id: response.id,
+          username: response.username,
+          role: response.role
+        };
+
+        login(user, response.token);
+
         navigate("/dashboard");
       }
+
     } catch (err) {
       const message =
         err.response?.data?.message ||
@@ -91,6 +101,7 @@ const Login = () => {
           <div className="divider">
             <span>Vous n'avez pas de compte ?</span>
           </div>
+
           <Link to="/register" className="btn-register-link">
             Créer un compte
           </Link>
