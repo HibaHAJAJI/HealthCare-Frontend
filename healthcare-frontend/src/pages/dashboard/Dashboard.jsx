@@ -34,8 +34,8 @@ const Dashboard = () => {
         ] = await Promise.all([
           fetchCount("patients"),
           fetchCount("medecins"),
-          fetchCount("rendezvous"),
-          fetchCount("dossiers"),
+          fetchCount("rendez-vous"),
+          fetchCount("dossier-medicaux"),
         ]);
 
         setStats({
