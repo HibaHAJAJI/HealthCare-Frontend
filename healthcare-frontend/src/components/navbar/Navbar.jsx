@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { FaHeartbeat } from "react-icons/fa";
+import { FaHeartbeat, FaUserCircle } from "react-icons/fa";
 import "./Navbar.css";
 
 const Navbar = () => {
@@ -18,7 +18,8 @@ const Navbar = () => {
 
       <div className="navbar-right">
         <Link to="/profile" className="profile-btn">
-          {user?.username}
+          <FaUserCircle className="profile-icon" />
+          <span>{user?.username || "Profil"}</span>
         </Link>
       </div>
     </nav>

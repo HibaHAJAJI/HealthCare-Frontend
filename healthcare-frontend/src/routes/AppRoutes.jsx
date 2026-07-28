@@ -7,6 +7,8 @@ import RoleGuard from "../guards/RoleGuard";
 
 import Home from "../pages/home/Home";
 import Dashboard from "../pages/dashboard/Dashboard";
+import Profile from "../pages/profile/Profile";
+import EditProfile from "../pages/profile/EditProfile";
 import About from "../pages/about/About";
 import NotFound from "../pages/notFound/NotFound";
 
@@ -55,6 +57,10 @@ const AppRoutes = () => {
         <Route index element={<Home />} />
         <Route path="dashboard" element={<Dashboard />} />
         <Route path="about" element={<About />} />
+          <Route path="/profile" element={<Profile />} />
+            <Route path="/profile/edit" element={<EditProfile />} />
+
+
 
  <Route element={<RoleGuard allowedRoles={["ADMIN"]} />}>
 

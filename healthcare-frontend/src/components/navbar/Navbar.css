@@ -60,3 +60,29 @@
 .profile-btn:hover {
   background: rgba(255, 255, 255, 0.3);
 }
+
+.profile-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  padding: 8px 18px;
+  background: rgba(255, 255, 255, 0.2);
+
+  color: #fff;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 15px;
+
+  border-radius: 30px;
+  transition: all 0.3s ease;
+}
+
+.profile-btn:hover {
+  background: rgba(255, 255, 255, 0.35);
+  transform: translateY(-1px);
+}
+
+.profile-icon {
+  font-size: 18px;
+}
