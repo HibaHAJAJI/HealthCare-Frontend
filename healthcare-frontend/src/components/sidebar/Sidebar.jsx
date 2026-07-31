@@ -12,7 +12,9 @@ import { useAuth } from "../../context/AuthContext";
 import "./Sidebar.css";
 
 const Sidebar = ({ isOpen, onClose }) => {
-  const { logout } = useAuth();
+  const { logout ,user} = useAuth();
+  console.log(user);
+  
 
   const menuItems = [
     {

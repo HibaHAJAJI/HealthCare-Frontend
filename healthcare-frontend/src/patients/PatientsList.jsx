@@ -17,7 +17,8 @@ const PatientsList = () => {
   const [patients, setPatients] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
+  const [error, setError] = useState("error");
+
 
   useEffect(() => {
     const loadPatients = async () => {

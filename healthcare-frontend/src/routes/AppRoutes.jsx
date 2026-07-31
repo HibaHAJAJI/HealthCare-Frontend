@@ -61,7 +61,6 @@ const AppRoutes = () => {
             <Route path="/profile/edit" element={<EditProfile />} />
 
 
-
  <Route element={<RoleGuard allowedRoles={["ADMIN"]} />}>
 
   <Route path="patients" element={<Patients />} />
