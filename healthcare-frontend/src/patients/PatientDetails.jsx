@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import {
   FaSpinner,
   FaArrowLeft,
@@ -7,6 +8,7 @@ import {
   FaPhone,
   FaEnvelope,
   FaUser,
+  FaNotesMedical,
 } from "react-icons/fa";
 
 import { Card } from "../components/card/Card";
@@ -27,8 +29,9 @@ const PatientDetails = () => {
         const data = await patientService.getById(id);
         setPatient(data);
       } catch (err) {
-        console.error("Erreur lors de la récupération du patient :", err);
+        console.error(err);
         setError("Impossible de charger les détails de ce patient.");
+        toast.error("Impossible de charger les détails du patient.");
       } finally {
         setLoading(false);
       }
@@ -57,6 +60,7 @@ const PatientDetails = () => {
           className="btn-back"
           onClick={() => navigate("/patients")}
         >
+          <FaArrowLeft size={16} />
           Retour à la liste
         </button>
       </div>
@@ -65,6 +69,7 @@ const PatientDetails = () => {
 
   return (
     <div className="patient-details-page">
+
       <div className="page-header">
         <button
           type="button"
@@ -85,6 +90,7 @@ const PatientDetails = () => {
       </div>
 
       <Card>
+
         <div className="patient-profile-header">
           <div className="profile-avatar-large">
             {patient.username?.charAt(0).toUpperCase()}
@@ -92,6 +98,7 @@ const PatientDetails = () => {
 
           <div className="profile-title-container">
             <h2>{patient.username}</h2>
+
             <span className="badge badge-success">
               Dossier actif
             </span>
@@ -99,6 +106,7 @@ const PatientDetails = () => {
         </div>
 
         <div className="patient-info-grid">
+
           <div className="info-block">
             <div className="block-header">
               <FaUser size={18} />
@@ -106,10 +114,24 @@ const PatientDetails = () => {
             </div>
 
             <div className="block-body">
-              <p><strong>Identifiant :</strong> #{patient.id}</p>
-              <p><strong>Nom d'utilisateur :</strong> {patient.username}</p>
-              <p><strong>Date de naissance :</strong> {patient.dateNaissance || "Non renseignée"}</p>
-              <p><strong>Rôle :</strong> {patient.role}</p>
+              <p>
+                <strong>Identifiant :</strong> #{patient.id}
+              </p>
+
+              <p>
+                <strong>Nom d'utilisateur :</strong>{" "}
+                {patient.username || "Non renseigné"}
+              </p>
+
+              <p>
+                <strong>Date de naissance :</strong>{" "}
+                {patient.dateNaissance || "Non renseignée"}
+              </p>
+
+              <p>
+                <strong>Rôle :</strong>{" "}
+                {patient.role || "Non renseigné"}
+              </p>
             </div>
           </div>
 
@@ -120,21 +142,68 @@ const PatientDetails = () => {
             </div>
 
             <div className="block-body">
+
               <p className="info-item-flex">
                 <FaEnvelope size={16} />
-                <span>{patient.email || "Non renseigné"}</span>
+                <span>
+                  {patient.email || "Non renseigné"}
+                </span>
               </p>
 
               <p className="info-item-flex">
                 <FaPhone size={16} />
-                <span>{patient.telephone || "Non renseigné"}</span>
+                <span>
+                  {patient.telephone || "Non renseigné"}
+                </span>
               </p>
+
             </div>
           </div>
+
+          <div className="info-block">
+            <div className="block-header">
+              <FaNotesMedical size={18} />
+              <h3>Informations médicales</h3>
+            </div>
+
+            <div className="block-body">
+
+              {patient.dossierMedical ? (
+                <>
+                  <p>
+                    <strong>Antécédents :</strong>{" "}
+                    {patient.dossierMedical.antecedents ||
+                      "Non renseignés"}
+                  </p>
+
+                  <p>
+                    <strong>Allergies :</strong>{" "}
+                    {patient.dossierMedical.allergies ||
+                      "Non renseignées"}
+                  </p>
+
+                  <p>
+                    <strong>Observations :</strong>{" "}
+                    {patient.dossierMedical.observations ||
+                      "Aucune observation"}
+                  </p>
+                </>
+              ) : (
+                <p>
+                  Aucune information médicale disponible.
+                </p>
+              )}
+
+            </div>
+          </div>
+
         </div>
+
       </Card>
+
     </div>
   );
 };
 
 export default PatientDetails;
+

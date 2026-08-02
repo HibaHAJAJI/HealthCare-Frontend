@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
 import {
   FaSearch,
@@ -52,10 +53,10 @@ const PatientsList = () => {
         prev.filter((patient) => patient.id !== id)
       );
 
-      alert("Patient supprimé avec succès !");
+      toast.success("Patient supprimé avec succès !");
     } catch (err) {
       console.error(err);
-      alert("Erreur lors de la suppression.");
+      toast.error("Erreur lors de la suppression.");
     }
   };
 
