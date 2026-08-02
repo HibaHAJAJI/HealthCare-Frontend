@@ -16,17 +16,15 @@ import patientService from "../services/patientService";
 const PatientsList = () => {
   const [patients, setPatients] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [sortOrder, setSortOrder] = useState("asc");
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("error");
-
+  const [error, setError] = useState("");
 
   useEffect(() => {
     const loadPatients = async () => {
       try {
         const response = await patientService.getAll();
-
-        setPatients(response.content);
-
+        setPatients(response.content || []);
       } catch (err) {
         console.error(err);
         setError("Impossible de charger la liste des patients.");
@@ -38,9 +36,14 @@ const PatientsList = () => {
     loadPatients();
   }, []);
 
-
   const handleDelete = async (id) => {
-    if (!window.confirm("Voulez-vous supprimer ce patient ?")) return;
+    const confirmDelete = window.confirm(
+      "Voulez-vous vraiment supprimer ce patient ?"
+    );
+
+    if (!confirmDelete) {
+      return;
+    }
 
     try {
       await patientService.delete(id);
@@ -56,16 +59,22 @@ const PatientsList = () => {
     }
   };
 
+  const filteredPatients = patients
+    .filter((patient) =>
+      (patient.username || "")
+        .toLowerCase()
+        .includes(searchTerm.toLowerCase())
+    )
+    .sort((a, b) => {
+      const nameA = (a.username || "").toLowerCase();
+      const nameB = (b.username || "").toLowerCase();
 
-  const filteredPatients = patients.filter((patient) =>
-    (patient.username ?? "")
-      .toLowerCase()
-      .includes(searchTerm.toLowerCase()) ||
-    (patient.email ?? "")
-      .toLowerCase()
-      .includes(searchTerm.toLowerCase())
-  );
+      if (sortOrder === "asc") {
+        return nameA.localeCompare(nameB);
+      }
 
+      return nameB.localeCompare(nameA);
+    });
 
   if (loading) {
     return (
@@ -74,7 +83,6 @@ const PatientsList = () => {
       </div>
     );
   }
-
 
   return (
     <div className="patients-list-page">
@@ -91,31 +99,46 @@ const PatientsList = () => {
         </Link>
       </div>
 
-
       <Card>
 
         <div className="table-actions">
-          <div className="search-container">
 
-            <FaSearch className="search-icon-inside"  />
+          <div className="search-container">
+            <FaSearch className="search-icon-inside" />
 
             <input
               type="text"
-              placeholder="Rechercher..."
+              placeholder="Rechercher par nom..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
-
           </div>
-        </div>
 
+          <div className="sort-container">
+            <select
+              value={sortOrder}
+              onChange={(e) => setSortOrder(e.target.value)}
+            >
+              <option value="asc">Nom (A → Z)</option>
+              <option value="desc">Nom (Z → A)</option>
+            </select>
+          </div>
+
+        </div>
 
         {error ? (
           <div className="error-container">
             {error}
           </div>
+        ) : patients.length === 0 ? (
+          <div className="empty-container">
+            Aucun patient disponible.
+          </div>
+        ) : filteredPatients.length === 0 ? (
+          <div className="empty-container">
+            Aucun patient trouvé.
+          </div>
         ) : (
-
           <Table
             headers={[
               "ID",
@@ -126,81 +149,53 @@ const PatientsList = () => {
               "Actions",
             ]}
           >
+            {filteredPatients.map((patient, index) => (
+              <tr
+                key={
+                  patient.id ||
+                  `${patient.telephone}-${patient.dateNaissance}-${index}`
+                }
+              >
+                <td>{patient.id}</td>
 
-            {filteredPatients.length === 0 ? (
+                <td>{patient.username}</td>
 
-              <tr>
-                <td colSpan={6}>
-                  Aucun patient trouvé.
+                <td>{patient.email}</td>
+
+                <td>{patient.telephone}</td>
+
+                <td>{patient.dateNaissance}</td>
+
+                <td>
+                  <div className="action-buttons-group">
+
+                    <Link
+                      to={`/patients/${patient.id}`}
+                      className="action-btn view"
+                    >
+                      <FaEye />
+                    </Link>
+
+                    <Link
+                      to={`/patients/edit/${patient.id}`}
+                      className="action-btn edit"
+                    >
+                      <FaEdit />
+                    </Link>
+
+                    <button
+                      type="button"
+                      className="action-btn delete"
+                      onClick={() => handleDelete(patient.id)}
+                    >
+                      <FaTrash />
+                    </button>
+
+                  </div>
                 </td>
               </tr>
-
-            ) : (
-
-              filteredPatients.map((patient, index) => (
-
-                <tr
-                  key={patient.id ?? `${patient.telephone}-${patient.dateNaissance}-${index}`}
-                >
-
-                  <td>{patient.id}</td>
-
-                  <td>
-                    {patient.username}
-                  </td>
-
-                  <td>
-                    {patient.email}
-                  </td>
-
-                  <td>
-                    {patient.telephone}
-                  </td>
-
-                  <td>
-                    {patient.dateNaissance}
-                  </td>
-
-
-                  <td>
-
-                    <div className="action-buttons-group">
-
-                      <Link
-                        to={`/patients/${patient.id}`}
-                        className="action-btn view"
-                      >
-                        <FaEye />
-                      </Link>
-
-
-                      <Link
-                        to={`/patients/edit/${patient.id}`}
-                        className="action-btn edit"
-                      >
-                        <FaEdit />
-                      </Link>
-
-
-                      <button
-                        className="action-btn delete"
-                        onClick={() => handleDelete(patient.id)}
-                      >
-                        <FaTrash />
-                      </button>
-
-                    </div>
-
-                  </td>
-
-                </tr>
-
-              ))
-
-            )}
-
+            ))}
           </Table>
-
         )}
 
       </Card>
@@ -210,3 +205,4 @@ const PatientsList = () => {
 };
 
 export default PatientsList;
+
